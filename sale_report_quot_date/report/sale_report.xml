@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="sale_pivot_report_inherit" model="ir.ui.view">
+            <field name="name">view.order.pivot.quotation.date</field>
+            <field name="model">sale.report</field>
+            <field name="inherit_id" ref="sale.view_order_product_search"/>
+            <field name="arch" type="xml">
+            <xpath expr="//filter[@name='Sales']" position="after">
+                    <filter name="today" string="Today"  domain="[('quotation_date','=', (context_today()+datetime.timedelta(days=0)).strftime('%Y-%m-%d'))]"/>
+                    <filter name="day_after" string="Day After"  domain="[('quotation_date','=', (context_today()+datetime.timedelta(days=1)).strftime('%Y-%m-%d'))]"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

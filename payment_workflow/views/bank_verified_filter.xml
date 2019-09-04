@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--This code adds new filter 'Bank Verified' in Invoicing-->
+        <record id="account_search_filter_bank_verified" model="ir.ui.view">
+            <field name="name">account.search.inherit.filter.bank</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='confirmed_paid']" position="after">
+                    <filter string="Bank Verified" name="bank_verified" domain="[('state', '=', 'bank_verified')]"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

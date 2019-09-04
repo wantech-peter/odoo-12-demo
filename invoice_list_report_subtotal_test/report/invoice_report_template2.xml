@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="invoice_subtotal2">
+        <t t-call="web.html_container">
+            <t t-call="invoice_list_report_subtotal_test.internal_layout">
+                <t t-foreach="docs" t-as="values">
+                    <t t-set="total" t-value="0"/>
+                    <div class="page" style="font-size:15px;">
+                        <h2 align="center"><b>司機現金收款表</b></h2>
+                        <div class="pull-right" style="margin-left:50%;">
+                            <strong>日期: </strong>
+                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y年%m月%d日')"/>
+                        </div>
+                    </div>
+                    <table class="table table-condensed" name="picking_list_table">
+                        <tbody class="invoice_tbody">
+                            <tr>
+                                <th style="font-size:20px">
+                                    <strong>
+                                        車號:
+                                        <span t-esc="values['name']"/>
+                                    </strong>
+                                </th>
+                            </tr>
+                            <t t-set="is_exist" t-value="-1"/>
+                            <t t-set="is_length" t-value="0"/>
+                            <t t-set="cust_total" t-value="0"/>
+                            <t t-foreach="values['data']" t-as="vals">
+                                <t t-if="vals['invoice'].invoice_partner != is_exist">
+                                    <tr>
+                                        <th>
+                                            <span t-esc="vals['invoice'].invoice_partner"/>
+                                        </th>
+                                        <th colspan="1">
+                                            <span t-esc="vals['invoice'].partner_id.display_name"/>
+                                        </th>
+                                        <th colspan="8">
+                                            <span t-esc="vals['invoice'].partner_id.street"/>
+                                            -
+                                            <span t-esc="vals['invoice'].partner_id.phone"/>
+                                        </th>
+                                        <th>
+                                            <!--<span t-field="o.partner_id.display_name"/>-->
+                                        </th>
+                                    </tr>
+                                </t>
+                                <t t-set="is_exist" t-value="vals['invoice'].invoice_partner"/>
+                                <tr>
+                                    <td/>
+                                    <td colspan="1">
+                                        <t t-if="vals['invoice'].quot_date">
+                                            <span t-field="vals['invoice'].quot_date"
+                                                  t-options="{&quot;format&quot;: &quot;yyyy/MM/dd&quot;}"/>
+                                        </t>
+                                    </td>
+                                    <td colspan="1">
+                                        <span t-esc="vals['invoice'].origin"/>
+                                    </td>
+                                    <td colspan="3">
+                                        <span t-field="vals['invoice'].amount_total_signed"/>
+                                    </td>
+                                </tr>
+                                <t t-set="is_length" t-value="is_length+1"/>
+                                <t t-set="cust_total" t-value="cust_total+vals['invoice'].amount_total_signed"/>
+                                <t t-set="total" t-value="total+vals['invoice'].amount_total_signed"/>
+                                <t t-if="is_length == cust_count[vals['invoice'].invoice_partner]">
+                                    <tr>
+                                        <td colspan="3"
+                                            style="text-align:right;">
+                                            <strong>小計: </strong>
+                                        </td>
+
+                                        <td style="text-align:left;">
+                                            <strong>
+                                                <span style="border-bottom: 1px black solid; width:120px; display:inline-block;">
+                                                    <span t-esc="cust_total"
+                                                          style="text-align:right;"
+                                                          t-options="{'widget':'monetary','display_currency':res_company.currency_id}"/>
+                                                </span>
+                                            </strong>
+                                        </td>
+
+                                        <td colspan="3"
+                                            style="text-align:right;">
+                                            <strong>實收：
+                                                <span style="border-bottom: 1px black solid; width:150px; display:inline-block;"/>
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                    <t t-set="is_length" t-value="0"/>
+                                    <t t-set="cust_total" t-value="0"/>
+                                </t>
+                            </t>
+                        </tbody>
+                    </table>
+                    <div class="clearfix">
+                        <br />
+                        <br />
+                        <div id="total" class="row">
+                            <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
+                                <table class="table table-sm">
+                                    <tr></tr>
+                                    <tr class="border-black o_subtotal">
+                                        <td colspan="2">
+                                        </td>
+                                        <td class="text-left">
+                                            <strong>總計:
+                                            <span t-esc="total"
+                                                  t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: res_company.currency_id}"/></strong>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div>
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <strong>實收總額</strong>
+                                        <div style="display:inline-block;border-bottom:1px black solid;width:100%"/>
+                                    </td>
+                                    <td>
+                                        <strong>司機簽收</strong>
+                                        <div style="display:inline-block;border-bottom:1px black solid;width:100%"/>
+                                    </td>
+                                    <td>
+                                        <strong>核數人</strong>
+                                        <div style="display:inline-block;border-bottom:1px black solid;width:100%"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <p style="page-break-after: always;"></p>
+                </t>
+            </t>
+        </t>
+    </template>
+    <template id="internal_layout">
+        <t t-if="not o and doc">
+            <t t-set="o" t-value="doc"/>
+        </t>
+
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id.sudo()"/>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"/>
+        </t>
+        <div class="header o_boxed_header">
+            <div class="row mb8">
+                <div class="col-xs-6 text-right mb4">
+                    <h4 class="mt0" t-field="company.report_header"/>
+                </div>
+            </div>
+        </div>
+        <div class="article">
+            <t t-raw="0"/>
+        </div>
+
+        <div class="footer o_standard_footer">
+            <div class="text-center" style="border-top: 1px solid black;">
+                <div class="text-muted" style="margin-top: 15px;">
+                    Page: <span class="page"/> / <span class="topage"/>
+                </div>
+            </div>
+        </div>
+
+    </template>
+</odoo>
+

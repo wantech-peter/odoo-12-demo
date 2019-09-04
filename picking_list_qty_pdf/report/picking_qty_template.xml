@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_product_list_pdf">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+            <div class="page">
+                <h2 style="margin-left:40%;">Picking by Car</h2>
+                <div class="row mb32">
+                    <div class="col-4">
+                        <strong>Date:</strong>
+                        <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/>
+                    </div>
+                </div>
+                <table class="table table-condensed" name="picking_product_qty">
+                    <tbody class="invoice_tbody">
+                        <t t-set="car_num" t-value="0"/>
+                        <t t-foreach="docs" t-as="doc">
+                            <t t-foreach="docs[doc]" t-as="docs_list">
+                                <t t-set="new_car_num" t-value="docs_list['car_number']"/>
+                                <t t-if='new_car_num != car_num'>
+                                    <thead style="background-color: #A19D9D; color:#000000  !important;">
+                                    <tr><td><strong>Car Number:<t t-esc="docs_list['car_number']"/></strong></td>
+                                        <td></td><td></td><td></td><td></td>
+                                    </tr>
+                                    <t t-set="car_num" t-value="docs_list['car_number']"/>
+                                    </thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Product Code</th>
+                                    <th>Product Name</th>
+                                    <th>Quantity</th>
+                                    <th>Unit</th>
+                                </tr>
+                                </t>
+                                <tr>
+                                <td></td>
+                                <td><t t-esc="docs_list['productcode']"/></td>
+                                <td><t t-esc="docs_list['productname']"/></td>
+                                <td><t t-esc="docs_list['total']"/></td>
+                                <td><t t-esc="docs_list['unit']"/></td>
+                                </tr>
+                            </t>
+                        </t>
+                    </tbody>
+                </table>
+                </div>
+                </t>
+            </t>
+    </template>
+</odoo>
+
+
+

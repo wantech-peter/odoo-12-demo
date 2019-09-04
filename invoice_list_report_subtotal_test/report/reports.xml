@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="paper_format_invoice_subtotal2" model="report.paperformat">
+            <field name="name">US Letter</field>
+            <field name="margin_top">6</field>
+            <field name="margin_bottom">15</field>
+            <field name="orientation">Portrait</field>
+            <field name="header_spacing">45</field>
+            <field name="dpi">300</field>
+        </record>
+
+        <report
+            id="action_invoice_list_report_subtotal"
+            model="account.invoice"
+            string="Invoice List with Customer Subtotal"
+            report_type="qweb-pdf"
+            name="invoice_list_report_subtotal_test.report_list_invoice_subtotal"
+            file="invoice_list_report_subtotal_test.report_list_invoice_subtotal"
+        />
+
+        <report
+            id="action_invoice_list_report_subtotal2"
+            model="account.invoice"
+            string="2. Parco - 司機現金表"
+            report_type="qweb-pdf"
+            paperformat="invoice_list_report_subtotal_test.paper_format_invoice_subtotal2"
+            name="invoice_list_report_subtotal_test.invoice_subtotal2"
+            file="invoice_list_report_subtotal_test.invoice_subtotal2"
+        />
+
+    </data>
+</odoo>
+

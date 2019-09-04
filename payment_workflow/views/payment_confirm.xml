@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="account_register_payment_wizard_inherit" model="ir.ui.view">
+            <field name="name">view.account.register.payment</field>
+            <field name="model">account.register.payments</field>
+            <field name="inherit_id" ref="account.view_account_payment_from_invoices" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='journal_id']" position="after">
+                    <field name="is_bank_verify" invisible="1"/>
+                    <field name="my_debit_account_id" attrs="{'invisible': [('is_bank_verify', '=', True)]}"/>
+                </xpath>
+                <xpath expr="//field[@name='group_invoices']" position="replace">
+
+                    <field name="group_invoices" attrs="{'invisible': [('is_bank_verify', '=', False)]}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <act_window
+            id="action_account_payment_from_invoices"
+            name="Bank Verified"
+            res_model="account.register.payments"
+            src_model="account.invoice"
+            view_mode="form"
+            multi="True"
+            target="new"
+            key2="client_action_multi"
+        />
+    </data>
+
+</odoo>

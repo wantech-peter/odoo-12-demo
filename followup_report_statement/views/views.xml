@@ -1,0 +1,103 @@
+<odoo>
+  <data>
+
+        <record id="followup_report_custom_tree" model="ir.ui.view">
+                <field name="name">report.statement.tree</field>
+                <field name="model">report.statement</field>
+                <field name="arch" type="xml">
+                    <tree string="Statement Report">
+                        <field name="partner_number" string='Customer No.'/>
+                        <field name="name"/>
+                        <field name="bforward" widget="monetary" string='BF Amount'/>
+                        <!--<field name="amount_total" widget="monetary"/>-->
+                        <field name="outstanding" widget="monetary"/>
+                        <field name="total" widget="monetary"/>
+                        <field name="start_date"/>
+                        <field name="cutoff_date"/>
+                        <field name="company_id" invisible="1"/>
+                        <field name="statement_receive"/>
+                        <field name="car_number"/>
+                    </tree>
+                </field>
+        </record>
+
+        <record model="ir.ui.view" id="followup_report_custom_form">
+            <field name="name">report.statement.form</field>
+            <field name="model">report.statement</field>
+            <field name="arch" type="xml">
+                <form string="Statement Report">
+                    <header>
+                        <button name="print_followup_hidden" string="Print"
+                               class="oe_highlight" type="object" invisible="1"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                              <field name="name"/>
+                              <field name="partner_number" string='Customer No.'/>
+                              <field name="start_date"/>
+                              <field name="bforward_date"/>
+                              <field name="imonth"/>
+                              <field name="statement_type"/>
+                            </group>
+                            <group>
+                              <field name="bforward" string='BF Amount'/>
+                              <field name="outstanding"/>
+                              <field name="total"/>
+                              <field name="cutoff_date"/>
+                              <field name="iyear"/>
+                              <field name="statement_letter"/>
+                          </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="followup_report_custom_search" model="ir.ui.view">
+            <field name='name'>report.statement.search</field>
+            <field name='model'>report.statement</field>
+            <field name='arch' type='xml'>
+                 <search string="Search Report Statement">
+		        <group col="8" colspan="4" expand="0" string="Group By">
+                            <filter string="Company" name="company_id" context="{'group_by':'company_id'}"/>
+                            <filter string="Partner" name="partner_id" context="{'group_by':'partner_id'}"/>
+                        </group>
+			<filter string="This Month" name="this_month" domain="[('imonth', '=', datetime.datetime.now().month),('iyear', '=', datetime.datetime.now().year)]"/>
+                        <filter string="Last Month" name="last_month" domain="[('imonth', '=', datetime.datetime.now().month - 1),('iyear', '=', datetime.datetime.now().year)]"/>
+                        <separator/>
+                        <filter string="Normal" name="statement_type" domain="[('statement_type', '=', False)]"/>
+                        <filter string="Whatsapp" name="statement_type" domain="[('statement_type', '=', 'whats_app')]"/>
+                        <filter string="Email" name="statement_type" domain="[('statement_type', '=', 'email')]"/>
+                        <filter string="Fax" name="statement_type" domain="[('statement_type', '=', 'fax')]"/>
+                        <filter string="Whatsapp Email" name="statement_type" domain="[('statement_type', '=', 'whats_app_email')]"/>
+                        <filter string="Urgent Whatapps" name="statement_type" domain="[('statement_type', '=', 'urgent_whatapps')]"/>
+                        <filter string="Urgent Email" name="statement_type" domain="[('statement_type', '=', 'urgent_email')]"/>
+                        <filter string="Urgent Fax" name="statement_type" domain="[('statement_type', '=', 'urgent_fax')]"/>
+                        <separator/>
+                        <filter string="AMY" name="statement_receive" domain="[('statement_receive', '=', 'AMY')]"/>
+                        <filter string="運輸" name="statement_receive" domain="[('statement_receive', '=', '運輸')]"/>
+                        <filter string="寄封" name="statement_receive" domain="[('statement_receive', '=', '寄封')]"/>
+                        <filter string="收票" name="statement_receive" domain="[('statement_receive', '=', '收票')]"/>
+                        <filter string="入數" name="statement_receive" domain="[('statement_receive', '=', '入數')]"/>
+                        <filter string="寄" name="statement_receive" domain="[('statement_receive', '=', '寄')]"/>
+                        <filter string="空白" name="statement_receive" domain="[('statement_receive', '=', False)]"/>
+                        <separator/>
+                        <field name="name"/>
+                        <field name="company_id"/>
+                        <field name="partner_number"/>
+                </search>
+            </field>
+      </record>
+
+
+        <record id="action_followup_report_custom" model="ir.actions.act_window">
+            <field name="name">Statement Report</field>
+            <field name="res_model">report.statement</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context"></field>
+            <field name="view_id" ref="followup_report_custom_tree"/>
+        </record>
+        <menuitem id="followup_report_menu" name="Statement Report" parent="account.menu_finance_receivables" sequence="21" action="action_followup_report_custom"/>
+  </data>
+</odoo>

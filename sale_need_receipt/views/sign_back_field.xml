@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+         <record id="sign_back_in_sale" model="ir.ui.view" >
+            <field name="name">sign.back.sale.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='print_receipt']" position="after">
+                    <field name="sign_back"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="sign_back_updt_wizard_view" model="ir.ui.view">
+            <field name="name">sign_back Update</field>
+            <field name="model">sign.back.update.wizard</field>
+            <field name="arch" type="xml">
+                <form string="sign_back Update">
+
+                    <group col="4">
+
+                       <P>Sign back field will be activated for the selected records </P>
+                    </group>
+                    <footer>
+                        <button name="sign_back_update" string="Update" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="btn btn-default" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="sign_back_update_action" model="ir.actions.act_window">
+            <field name="name">sign_back Update</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sign.back.update.wizard</field>
+            <field name="view_id" ref="sign_back_updt_wizard_view"/>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+         <act_window name="Sign Back Update"
+            res_model="sign.back.update.wizard"
+            src_model="sale.order"
+            view_mode="form"
+            view_id="sign_back_updt_wizard_view"
+            target="new"
+            key2="sign_back_update_action"
+            id="action_wizard_open"
+        />
+    </data>
+</odoo>
+
+
+

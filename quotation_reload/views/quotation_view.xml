@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+    	
+    <record id="quotation_reload" model="ir.ui.view">
+            <field name="name">sale.order.quotation.reload</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_management.sale_order_form_quote"/>
+            <field name="arch" type="xml">
+            <xpath expr="//field[@name='sale_order_template_id']" position="replace">
+                <label for="sale_order_template_id"/>
+                <div class="o_row">
+                  <field name="sale_order_template_id" context="{'company_id': company_id}" options="{'no_create': True, 'no_open': True}" groups="sale_management.group_sale_order_template"/>
+                  <button name="action_quotation_reload" string="Reload" type="object" style="margin-left:20px;" class="btn-primary"/>
+                  <button name="action_quotation_delete" string="Update" type="object" style="margin-left:20px;" class="btn-primary oe_edit_only"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+
+    </data>
+</odoo>

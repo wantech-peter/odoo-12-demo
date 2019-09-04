@@ -1,0 +1,55 @@
+<odoo>
+  <data>
+
+        <record id="project_view_tree" model="ir.ui.view">
+                <field name="name">report.test.stock.dailyinvtoryreport.tree</field>
+                <field name="model">report.test.stock.dailyinvtoryreport</field>
+                <field name="arch" type="xml">
+                    <tree string="cashmove tree">
+                        <field name="quotation_date"/>
+                        <field name="scount"/>
+                        <field name="number"/>
+                        <field name="p01_qty"/>
+                        <field name="p02_qty"/>
+                        <field name="p03_qty"/>
+                        <field name="p04_qty"/>
+                        <field name="p05_qty"/>
+                        <field name="p06_qty"/>
+                        <field name="p07_qty"/>
+                        <field name="p08_qty"/>
+                        <field name="p09_qty"/>
+                    </tree>
+                </field>
+        </record>
+
+
+        <record id="project_view_search" model="ir.ui.view">
+            <field name='name'>report.test.stock.dailyinvtoryreport.search</field>
+            <field name='model'>report.test.stock.dailyinvtoryreport</field>
+            <field name='arch' type='xml'>
+                 <search string="Search customer by car">
+                        <field name="quotation_date"/>
+                </search>
+            </field>
+
+        </record>
+
+
+
+        <!--Action for Control Accounts-->
+        <record id="project_action_control_accounts" model="ir.actions.act_window">
+            <field name="name">Control Accounts</field>
+            <field name="res_model">report.test.stock.dailyinvtoryreport</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="search_view_id" ref="project_view_search"/>
+            <field name="context"></field>
+            <field name="view_id" ref="project_view_tree"/>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                運輸貨量參考(約數)總表(一)
+              </p>
+            </field>
+        </record>
+        <menuitem id="all_picking2" name="運輸貨量參考(約數)總表(一)" parent="stock.menu_stock_warehouse_mgmt" sequence="6" action="project_action_control_accounts"/>
+  </data>
+</odoo>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_list_picking_by_page">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                    <div class="page" style="font-size:15px;">
+                         <h2 align="center">提貨分類表 - 客戶明細</h2>
+                        <div class="pull-right" style="margin-left:50%;"><strong>日期:</strong>
+                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/></div>
+                            </div>
+                                <t t-foreach="docs" t-as="values">
+                                    <table class="table table-condensed" name="picking_list_table">
+                                    <tbody class="invoice_tbody">
+                                        <tr>
+                                        <td style="padding-left:10px;"><strong>車號:<span t-esc="values['name']"/></strong></td>
+                                            <td/>
+                                            <td/>
+                                            <td/>
+                                            <td/>
+                                        </tr>
+                                        <t t-set="is_exist" t-value="-1"/>
+                                        <t t-foreach="values['data']" t-as="vals">
+                                            <t t-if="vals['custno'] != is_exist">
+                                                <tr>
+                                                    <th></th>
+                                                      <th style="padding-left:10px;"><strong><span t-esc="vals['custno']"/></strong></th>
+                                                      <th style="padding-left:10px;"><strong><span t-esc="vals['custname']"/></strong></th>
+                                                      <th/><th/>
+                                                </tr>
+                                                <t t-set="is_exist" t-value="vals['custno']"/>
+                                            </t>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td><span t-esc="vals['sono']"/></td>
+                                                <td><span t-esc="vals['productname']"/></td>
+                                                <td>
+                                                    <span t-esc="vals['product_qty']"/>
+                                                    <span t-esc="vals['unit']"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                    </table>
+                                    <p style="page-break-after: always;"></p>
+                                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
+
+
+
+
+

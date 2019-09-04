@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="out_qty_view_in_product">
+            <field name="name">product.template.tree.view</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                        <field name="out_qty" attrs="{'invisible':[('type', '!=', 'product')]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+
+
+

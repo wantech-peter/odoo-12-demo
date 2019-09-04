@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="car_number_search" model="ir.ui.view">
+            <field name="name">car.number.search.view</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group/filter[@name='duedate']" position="after">
+                    <filter string="Paid Date" name="paiddate" context="{'group_by':'payment_date'}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+
+
+

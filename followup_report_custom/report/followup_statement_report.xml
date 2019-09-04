@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <template id="followup_custom">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-set="partner"  t-value="doc.partner_id"/>
+                <t t-call="followup_report_custom.external_layout">
+                    <t t-set="values"  t-value="request.env['account.followup.report']._get_statement_report_lines({'partner_id': partner.id, 'start_date': doc.sudo().start_date, 'cutoff_date': doc.sudo().cutoff_date})"/>
+                    <t t-set="followups" t-value="values.get('followups')"/>
+                    <t t-set="subtotal" t-value="values.get('subtotal')"/>
+                    <t t-set="is_year" t-value="values.get('is_year')"/>
+                    <!--<t t-set="followups" t-value="followups.sorted(key=lambda i : i['columns'][0]['name'])"/>-->
+                    <hr />
+                    <div class="page">
+                      <div class="row">
+                        <div class="col-8 pull-left">
+                            <strong><span style="font-size: 20px;" t-esc="partner.partner_number"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;<span style="font-size: 20px;" t-esc="partner.name"/></strong><br/>
+                            <span t-esc="partner.street"/><br/><span t-esc="partner.street2"/>
+                        </div>
+                        <div class="col-8 pull-right">
+                            <div class="row">
+                                <div style="margin-left:-15px;">
+                                    <div>列印日期:</div>
+                                    <div>載數日期:</div>
+                                    <div>客戶電話:</div>
+                                    <div>客戶傳真:</div>
+                                </div>
+                                <div style="margin-left:10px;">
+                                    <div><span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y年%m月%d日')"/></div>
+                                    <div><t t-esc="datetime.datetime.strptime(str(doc.cutoff_date),'%Y-%m-%d').strftime('%Y年%m月%d日')"/></div>
+                                    <div><t t-esc="partner.phone"/></div>
+                                    <div><t t-esc="partner.fax_number"/></div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="text-center"><span style="font-size: 25px;"><strong>月結單</strong></span></div>
+                        <div style="border-top:10px;border:1px solid #000;"/>
+                        <div class="col-12" style="margin-top:9px;padding-bottom:5px;">
+                          <div class="row">
+                              <div class="col-2" style="padding-left:0px;">
+                                  <strong>前單結餘 : </strong>
+                              </div>
+                              <div class="col-8" style="border-bottom: 1px #000 solid;">
+                              </div>
+                              <div class="col-2" style="border-bottom: 1px #000 solid;padding-left:0px;">
+                                 <span t-esc="doc.bforward" t-options="{'widget': 'monetary', 'display_currency': partner.company_id.currency_id}"/>
+                              </div>
+                          </div>
+                        </div>
+                        <div style="margin-top:10px;">
+                            <div class="row">
+                                <div class="col-2">
+                                    <div><strong>本月細則</strong></div>
+                                </div>
+                                <div class="col-3">
+                                    <div><strong>發票日期</strong></div>
+                                </div>
+                                <div class="col-3">
+                                    <div><strong>發票號碼</strong></div>
+                                </div>
+                                <div class="col-2">
+                                    <div><strong>發票金額</strong></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="border:1px solid #000;"/>
+                        <div style="font-size: 15px;">
+                            <div class="row">
+                                <div class="col-2"/>
+                                <div class="col-3">
+                                    <t t-foreach="followups" t-as="row">
+                                        <t t-if="is_year">
+                                            <div><t t-esc="datetime.datetime.strptime(row['columns'][0]['name'],'%Y/%m/%d').strftime('%Y/%m/%d')"/></div>
+                                        </t>
+                                        <t t-else="">
+                                            <div><t t-esc="datetime.datetime.strptime(row['columns'][0]['name'],'%m/%d/%Y').strftime('%Y/%m/%d')"/></div>
+                                        </t>
+                                    </t>
+                                </div>
+                                <div class="col-3">
+                                    <t t-foreach="followups" t-as="row">
+                                        <div><t t-esc="row['columns'][2]['name']"/></div>
+                                    </t>
+                                </div>
+                                <div class="col-2">
+                                    <t t-if="len(followups) &gt;= 20">
+                                      <t t-set="index" t-value="30"/>
+                                    </t>
+                                    <t t-if="len(followups) &lt; 20">
+                                      <t t-set="index" t-value="32"/>
+                                    </t>
+                                    <t t-foreach="followups" t-as="row">
+                                        <div><t t-esc="row['columns'][6]['name']"/></div>
+                                        <t t-set="index" t-value="index-1"/>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                        <t t-foreach="range(index)" t-as="row">
+                            <div style="height:21px"></div>
+                             <!--<t t-if="row['columns'][0]['name']">-->
+                                 <!---->
+                             <!--</t>-->
+                        </t>
+                        <div class="col-12" style="margin-top:5px;">
+                          <div class="row">
+                              <div class="col-2" style="padding-left:0px;"/>
+                              <div class="col-6">
+                              </div>
+                              <div class="col-2">
+                                 <p style="padding-left:30px;font-weight:bold">本月金額:</p>
+                              </div>
+                              <div class="col-2" style="padding-left:0px;">
+                                 <t t-esc="subtotal" t-options="{'widget': 'monetary', 'display_currency': partner.company_id.currency_id}"/>
+                                 <t t-set="total" t-value="subtotal+doc.bforward"/>
+                              </div>
+                          </div>
+                        </div>
+                        <div class="col-12" style="margin-top:20px;border: 1px solid #000;"/>
+                        <div class="col-12" style="margin-top:10px;">
+                          <div class="row">
+                              <div class="col-2" style="padding-left:0px;"/>
+                              <div class="col-6">
+                              </div>
+                              <div class="col-2">
+                                 <p style="padding-left:12px;font-weight:bold">應付總金額:</p>
+                              </div>
+                              <div class="col-2" style="padding-left:0px;">
+                                 <p style="border: 1px solid #000;background: #DCDCDC;padding-left: 4px;width: 154px;font-size: 23px;">
+                                   <strong><t t-esc="total" t-options="{'widget': 'monetary', 'display_currency': partner.company_id.currency_id}"/></strong>
+                                 </p>
+                              </div>
+                          </div>
+                        </div>
+                         <!--<div class="col-4 pull-right">-->
+                            <!--<div class="row">-->
+	                            <!--<div class="col-6 pull-right">-->
+	                                <!--<div style="padding-left:15px;margin-bottom: 11px;"><strong>本月金額: </strong></div>-->
+	                                <!--<t t-set="total" t-value="subtotal+doc.bforward"/>-->
+	                                <!--<div style="padding-left:15px;"><strong>應付總金額: </strong></div>-->
+	                            <!--</div>-->
+	                            <!--<div class="row"/>-->
+	                            <!--<div class="col-6 pull-right">-->
+	                                 <!--<div style="margin-bottom: 7px;border: 1px solid #000;padding-left:4px;width:160px;font-size: 18px;"><t t-esc="subtotal" t-options="{'widget': 'monetary', 'display_currency': partner.company_id.currency_id}"/></div>-->
+                                    <!--<div style="border: 1px solid #000;background: #DCDCDC;padding-left:4px;width: 160px;font-size: 23px;"><strong><t t-esc="total" t-options="{'widget': 'monetary', 'display_currency': partner.company_id.currency_id}"/></strong></div>-->
+	                            <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    <template id="external_layout">
+        <t t-if="not o" t-set="o" t-value="partner"/>
+        <t t-set="company" t-value="o.company_id.sudo()"/>
+        <div class="header">
+            <div class="row">
+                <t t-if="request.env.user.company_id.id == 2">
+                  <div class="col-3 offset-2">
+                          <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" alt="Logo" style="width:220px;"/>
+                  </div>
+                </t>
+                <t t-if="request.env.user.company_id.id != 2">
+                  <div class="col-2 offset-2">
+                          <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" alt="Logo" style="width:120px;"/>
+                  </div>
+                </t>
+                <div class="col-8" style="font-size:13px;">
+                     <div>
+                        <span t-field="o.company_id.name" style="font-size: 40px;font-weight: bold;"/>
+                        <t t-if="request.env.user.company_id.id == 2">
+                            <span style="margin-left: 250px;font-size: 21px;font-weight: bold;" t-esc="doc.car_number"/><br />
+                        </t>
+                        <t t-if="request.env.user.company_id.id != 2">
+                            <span class="pull-right" style="font-size: 21px;font-weight: bold;" t-esc="doc.car_number"/><br />
+                        </t>
+                        <t t-if="request.env.user.company_id.id == 2">
+                           <span style="font-size: 30px;font-weight: bold;">TAK PO FOOD COMPANY</span><br />
+                           <span style="font-size: 18px;">(由鴻圖食品集團有限公司全資擁有)</span>
+                        </t>
+                     </div>
+                     <div t-field="o.company_id.social_linkedin" style="font-size: 18px;font-weight: bold;"/>
+                     <div>
+                         <span t-esc="o.company_id.street" style="margin-right:30px;"/>
+                         <t t-if="request.env.user.company_id.id == 2">
+                             <span>G/F, 11 Yin Kong Road, North N.T. H.K</span>
+                         </t>
+                         <span t-esc="o.company_id.street2"/>
+                         <span t-esc="o.company_id.social_youtube"/>
+                     </div>
+                      <div>
+                         <span>電話：</span><span t-esc="o.company_id.phone" style="margin-right:30px;"/>
+                         <t t-if="request.env.user.company_id.id == 2">
+                            <span style="margin-left:46px;">會計部：</span><span t-esc="o.company_id.vat" style="margin-right:30px;"/>
+                        </t>
+                        <t t-if="request.env.user.company_id.id != 2">
+                            <span>會計部：</span><span t-esc="o.company_id.vat" style="margin-right:30px;"/>
+                        </t>
+
+                         <span>傳真：</span><span t-esc="o.company_id.social_github"/><br/>
+                     </div>
+                     <div t-if="o.company_id.id != 2">
+                         <span>電郵：</span><span t-esc="o.company_id.email" style="margin-right:48px;"/>
+                         <span>網址：</span><span t-esc="o.company_id.website"/>
+                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div>
+                <ul class="list-inline mb4">
+                    <li t-if="company.statement_footer" class="list-inline-item"><span style="font-size: 12px;" t-field="company.statement_footer"/></li>
+                </ul>
+                <div name="financial_infos">
+                    <span t-field="company.report_footer"/>
+                </div>
+
+                <div t-if="report_type == 'pdf'" class="text-center text-muted">
+                    Page: <span class="page"/> / <span class="topage"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-call="web.address_layout"/>
+            <t t-raw="0"/>
+        </div>
+    </template>
+</odoo>
+
+
+
+
+
+

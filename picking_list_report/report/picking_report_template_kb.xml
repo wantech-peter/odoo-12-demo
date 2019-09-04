@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_list_picking_kb">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page" style="font-size:15px;">
+                    <h2 align="center">
+                        <span t-esc="category"/>
+                        佳寶明細
+                    </h2>
+                    <div class="pull-right" style="margin-left:50%;">
+                        <strong>日期:</strong>
+                        <!--<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/></div>-->
+                        <span t-esc="docs[0]['sodate']"/>
+                    </div>
+                </div>
+                <table class="table table-condensed" name="picking_list_table">
+                    <tbody class="invoice_tbody">
+                        <t t-set="car_num" t-value="-1"/>
+                        <t t-set="customer_num" t-value="-1"/>
+                        <t t-foreach="docs" t-as="o">
+                            <t t-foreach="o" t-as="c">
+                                <t t-if="c.car_number != car_num">
+                                    <tr>
+                                        <td colspan="2" style="padding-left:10px; font-size: 22px;">
+                                            <strong>車號:
+                                                <span t-field="o.car_number" style="font-size: 22px;"/>
+                                            </strong>
+                                        </td>
+                                        <td/>
+                                        <td/>
+                                        <td/>
+                                    </tr>
+                                </t>
+                                <t t-if="c.custno != customer_num">
+                                    <tr>
+                                        <th/>
+                                        <th colspan="4" style="padding-left:10px;">
+                                            <strong>
+                                                <span t-field="c.custno" style="font-size: 22px;"/>
+                                                <span t-field="c.custname" style="font-size: 22px;"/>
+                                            </strong>
+                                        </th>
+
+                                    </tr>
+                                    <t t-set="customer_num" t-value="c.custno"/>
+                                </t>
+                                <t t-set="car_num" t-value="c.car_number"/>
+                                <tr>
+                                    <td/>
+                                    <td></td>
+                                    <td>
+                                        <span t-field="c.sono" style="font-size: 20px;"/>
+                                    </td>
+                                    <td colspan="2">
+                                        <span t-field="c.productname" style="font-size: 20px;"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="c.product_qty" style="font-size: 20px;"/>
+                                        <span t-field="c.unit" style="font-size: 20px;"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                    </tbody>
+                </table>
+            </t>
+        </t>
+    </template>
+</odoo>
+
+
+
+

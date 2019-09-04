@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_list_invoice_group_subtotal">
+<t t-call="web.html_container">
+            <t t-call="invoice_list_report_group_subtotal.internal_layout">
+                <div class="page" style="font-size:15px;margin-top: 0;">
+                    <h2 align="center">Invoice List with Car Total</h2>
+<!--                    <div class="pull-right" style="margin-left:50%;">-->
+<!--                        <strong>Date:</strong>-->
+<!--                        <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/>-->
+<!--                    </div>-->
+                </div>
+                <table class="table table-condensed" name="invoice_list_table">
+                    <tbody class="invoice_tbody">
+                        <t t-set="total" t-value="0"/>
+                        <t t-set="car_num" t-value="0"/>
+                        <t t-set="car_num_2" t-value="0"/>
+                        <t t-set="car_total" t-value="0"/>
+                        <tr style="border:hidden;">
+                                    <th/>
+                                    <th>客戶編號</th>
+                                    <th>客戶名稱</th>
+                                    <th>發票日期</th>
+                                    <th>發票號碼</th>
+                                    <th>金額</th>
+                        </tr>
+                        <t t-foreach="docs.sorted(key = lambda x: x.number_car)" t-as="o">
+                            <t t-if="car_num_2 == 0">
+                                <t t-set="car_num_2" t-value="o.number_car"/>
+                            </t>
+                            <t t-if="o.number_car != car_num_2">
+                                <tr style="border:hidden;">
+                                    <td colspan="5" style="text-align: right;font-size:18px;">
+                                      <div><span>Sub Total</span></div>
+                                    </td>
+                                    <td>
+                                      <div>
+                                        <span t-esc="car_total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: res_company.currency_id}"/>
+                                        </div>
+                                        <t t-set="car_total" t-value="0"/>
+                                    </td>
+                                </tr>
+                                <t t-set="car_num_2" t-value="o.number_car"/>
+                            </t>
+                            <t t-if="o.number_car != car_num">
+                                <tr style="border:hidden;">
+                                    <td>
+                                        <strong>
+                                            <span t-field="o.number_car"/>
+                                        </strong>
+                                    </td>
+                                </tr>
+
+                                <t t-set="car_num" t-value="o.number_car"/>
+                            </t>
+                            <tr style="border:hidden;">
+                                <td/>
+                                <td>
+                                    <span t-field="o.invoice_partner"/>
+                                </td>
+                                <td>
+                                    <span t-field="o.partner_id.name"/>
+                                </td>
+                                <td>
+                                    <span t-esc="datetime.datetime.strftime(o.quot_date, '%Y-%m-%d')"/>
+                                </td>
+                                <td>
+                                    <span t-field="o.origin"/>
+                                </td>
+                                <td>
+                                    <span t-field="o.amount_total_signed"/>
+                                </td>
+                                <t t-set="total" t-value="total + o.amount_total_signed"/>
+                                <t t-set="car_total" t-value="car_total + o.amount_total_signed"/>
+                            </tr>
+                        </t>
+                        <tr style="border:hidden;">
+                            <td colspan="5" style="text-align: right;">
+                                <div style="font-size:18px;"><span>Sub Total</span></div>
+                            </td>
+                            <td>
+                                <span t-esc="car_total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: res_company.currency_id}"/>
+                                <t t-set="car_total" t-value="0"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="clearfix">
+                    <div id="total" class="row">
+                        <div>
+                            <strong>Date:</strong>
+                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/>
+                        </div>
+                        <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
+                            <table class="table table-sm">
+                                <tr class="border-black o_subtotal" style="">
+                                    <td>
+                                        <strong style="font-size:24px;">Total</strong>
+                                        <span style="font-size:24px;" t-esc="total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: res_company.currency_id}"/>
+                                    </td>
+                                    <!--<td class="text-right">-->
+                                        <!--<span t-esc="total"-->
+                                              <!--t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: res_company.currency_id}"/>-->
+                                    <!--</td>-->
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+    <template id="internal_layout">
+        <t t-if="not o and doc">
+            <t t-set="o" t-value="doc"/>
+        </t>
+
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id.sudo()"/>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"/>
+        </t>
+        <div class="article">
+            <t t-raw="0"/>
+        </div>
+
+        <div class="footer o_standard_footer">
+            <div class="text-center" style="border-top: 1px solid black;">
+                <div class="text-muted" style="margin-top: 15px;">
+                    Page: <span class="page"/> / <span class="topage"/>
+                </div>
+            </div>
+        </div>
+    </template>
+</odoo>
+
+
+
+
+

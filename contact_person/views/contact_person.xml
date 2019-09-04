@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+         <record model="ir.ui.view" id="contact_person">
+            <field name="name">res.partner.contact.updation</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="sms.partner_form_send_sms_form_view"/>
+            <field name="arch" type="xml">
+            <xpath expr="//label[@for='phone']" position="before">
+                        <field name="my_contact_person"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
+

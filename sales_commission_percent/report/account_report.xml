@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="account_pivot_report_inherit" model="ir.ui.view">
+            <field name="name">view.order.pivot.commission.percentage</field>
+            <field name="model">account.invoice.report</field>
+            <field name="inherit_id" ref="account.view_account_invoice_report_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group/filter[@name='company']" position="after">
+                    <filter string="Commission %" name="commission_percent" domain="[]" context="{'group_by':'commission_percent'}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

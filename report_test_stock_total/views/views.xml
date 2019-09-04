@@ -1,0 +1,46 @@
+<odoo>
+  <data>
+        <record id="project_view_tree" model="ir.ui.view">
+                <field name="name">report.test.stock.total.tree</field>
+                <field name="model">report.test.stock.total</field>
+                <field name="arch" type="xml">
+                    <tree string="cashmove tree" default_order="product_qty">
+                        <!-- <field name="custno"/> -->
+                        <field name="productcode"/>
+                        <field name="productname"/>
+                        <field name="product_qty"/>
+                        <field name="unit"/>
+                        <field name="quotation_date"/>
+                    </tree>
+                </field>
+        </record>
+
+        <record id="project_view_search" model="ir.ui.view">
+            <field name='name'>report.test.stock.total.search</field>
+            <field name='model'>report.test.stock.total</field>
+            <field name='arch' type='xml'>
+                <search string="lunch cashmove">
+                        <field name="productcode"/>
+                </search>
+            </field>
+        </record>
+
+
+
+        <!--Action for Control Accounts-->
+        <record id="project_action_control_accounts" model="ir.actions.act_window">
+            <field name="name">Control Accounts</field>
+            <field name="res_model">report.test.stock.total</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="search_view_id" ref="project_view_search"/>
+            <field name="context"></field>
+            <field name="view_id" ref="project_view_tree"/>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Create a new Picking
+              </p>
+            </field>
+        </record>
+        <menuitem id="daily_output" name="每日出倉表" parent="stock.menu_stock_warehouse_mgmt" sequence="1" action="project_action_control_accounts"/>
+  </data>
+</odoo>

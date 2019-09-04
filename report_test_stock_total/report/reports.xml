@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            id="daily_output_list_report"
+            model="report.test.stock.total"
+            string="每日出倉表"
+            report_type="qweb-pdf"
+            name="report_test_stock_total.report_list_output"
+            file="report_test_stock_total.report_list_output"
+        />
+
+    </data>
+</odoo>

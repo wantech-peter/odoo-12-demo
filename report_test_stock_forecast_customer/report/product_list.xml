@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_customer">
+        <t t-call="web.html_container">
+            <t t-set="category" t-value="docs[0]['category']"/>
+            <t t-call="report_test_stock_forecast_customer.internal_layout">
+                    <div class="page" style="font-size:15px;">
+                        <h2 align="center"> <span t-esc="category" />客戶表(司機用)</h2>
+                    <div class="row mb32">
+                        <div class="col-4">
+                            <strong>日期:</strong>
+                                  <span t-esc="docs[0]['quotation_date']"/>
+                            <!--<span t-esc="context_timestamp(docs[0]['quotation_date']).strftime('%Y-%m-%d')"/>-->
+                        </div>
+                    </div>
+
+                        <table class="table table-bordered">
+                            <tbody class="sale_tbody">
+                                <thead>
+                                <tr>
+                                    <t t-set="exist" t-value="[]"/>
+                                    <th class="text-center"></th>
+                                    <t t-foreach="product_names" t-as="product_name">
+                                        <th class="text-center" style="color:#000;"><span t-esc="product_name"/></th>
+                                    </t>
+                                </tr>
+                                </thead>
+                                <t t-set="current_car_number" t-value="0"/>
+                                <t t-set="customer_name_index" t-value="0"/>
+                                <t t-foreach="car_numbers" t-as="car_number">
+                                    <tr>
+                                        <td class="text-center">車號：<span t-esc="car_number"/></td>
+                                    </tr>
+                                    <t t-foreach="customer_names" t-as="customer_name">
+
+                                        <t t-set="new_customer_name" t-value="1"/>
+                                        <t t-foreach="product_names" t-as="product_name">
+                                            <t t-if="(car_number,product_name,customer_name) in products_grouped">
+                                                <t t-set="new_customer_name" t-value="2"/>
+                                            </t>
+                                        </t>
+                                        <t t-if="new_customer_name == 2">
+                                            <tr>
+                                                <td class="text-center">
+                                                    <span t-esc="customer_name"/>
+                                                </td>
+                                                <t t-foreach="product_names" t-as="product_name">
+                                                    <t t-if="(car_number,product_name,customer_name) in products_grouped">
+                                                        <td class="text-center" style="color:#000;">
+                                                            <span t-esc="products_grouped[(car_number, product_name,customer_name)]['quantity']"
+                                                                  t-options='{"widget": "float", "precision": 0}'/>
+                                                            <span t-esc="products_grouped[(car_number, product_name,customer_name)]['unit']"/>
+                                                        </td>
+                                                        <!--<t t-set="product_quantity" t-value="products_grouped[(product_name,customer_name)]['quantity']"/>-->
+                                                        <!--<t t-set="product_totals" t-value="product_totals[product_count]+[product_quantity]"/>-->
+                                                    </t>
+                                                    <t t-else="">
+                                                        <t t-if="new_customer_name == 2">
+                                                            <td class="text-center" style="color:#000;"></td>
+                                                        </t>
+                                                    </t>
+                                                </t>
+                                            </tr>
+                                        </t>
+                                </t>
+                                </t>
+                            </tbody>
+                              <!--<tfoot>-->
+                                <!--<tr>-->
+                                   <!--<td class="text-center" style="background:''">總數</td>-->
+                                    <!--<t t-foreach="product_totals" t-as="product_total">-->
+                                        <!--<td class="text-center" style="color:#000;">-->
+                                            <!--<span t-esc="product_total['val']" t-options='{"widget": "float", "precision": 0}'/>-->
+                                            <!--<span t-esc="product_total['unit']" />-->
+                                        <!--</td>-->
+                                    <!--</t>-->
+                                <!--</tr>-->
+                              <!--</tfoot>-->
+                        </table>
+                    </div>
+                <table class="table table-bordered">
+                    <tbody class="sale_tbody">
+                        <thead>
+                        <tr>
+                            <t t-set="exist" t-value="[]"/>
+                            <th class="text-center"></th>
+                            <t t-foreach="product_names" t-as="product_name">
+                                <th class="text-center" style="color:#000;"><span t-esc="product_name"/></th>
+                            </t>
+                        </tr>
+                        </thead>
+                      <tfoot>
+                        <tr>
+                           <td class="text-center" style="background:''">總數</td>
+                            <t t-foreach="product_totals" t-as="product_total">
+                                <td class="text-center" style="color:#000;">
+                                    <span t-esc="product_total['val']" t-options='{"widget": "float", "precision": 0}'/>
+                                    <span t-esc="product_total['unit']" />
+                                </td>
+                            </t>
+                        </tr>
+                      </tfoot>
+                    </tbody>
+                </table>
+            </t>
+            </t>
+    </template>
+    <template id="internal_layout">
+        <t t-if="not o and doc">
+            <t t-set="o" t-value="doc"/>
+        </t>
+
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id.sudo()"/>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"/>
+        </t>
+        <div class="header o_boxed_header">
+        <div class="row mb8">
+        <div class="col-xs-6 text-right mb4">
+         <h4 class="mt0" t-field="company.report_header"/>
+            </div>
+            </div>
+            </div>
+            <div class="article">
+            <t t-raw="0" />
+            </div>
+    </template>
+</odoo>
+
+
+
+

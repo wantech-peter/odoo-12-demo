@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <report
+                id="action_product_list_pdf_report2"
+                model="report.test.stock.forecast"
+                string="執貨單(補貨總表)"
+                report_type="qweb-pdf"
+                name="product_list_pdf_2.report_list_pdf_product2"
+                file="product_list_pdf_2.report_list_pdf_product2"
+        />
+    </data>
+</odoo>

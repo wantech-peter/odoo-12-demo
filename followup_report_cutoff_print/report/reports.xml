@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="paper_format_followup_cutoff" model="report.paperformat">
+            <field name="name">US Letter Followup Cutoff</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="margin_bottom">33</field>
+	    <field name="header_spacing">37</field>
+            <field name="margin_top">38</field>
+	    <field name="dpi">90</field>
+        </record>
+        <report
+            id="action_followup_report_cutoff"
+            model="report.statement.cutoff"
+            string="Statement Report (Month End+10)"
+            report_type="qweb-pdf"
+            paperformat="followup_report_cutoff_print.paper_format_followup_cutoff"
+            name="followup_report_cutoff_print.followup_cutoff"
+            file="followup_report_cutoff_print.followup_cutoff"
+        />
+
+    </data>
+</odoo>

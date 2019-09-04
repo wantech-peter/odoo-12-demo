@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="followup_statement_print_button">
+            <field name="name">report.statement.inherit.button</field>
+            <field name="model">report.statement</field>
+            <field name="inherit_id" ref="followup_report_statement.followup_report_custom_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//form/header/button[@name='print_followup_hidden']" position="after">
+                    <button name="%(followup_report_custom.action_followup_report_custom)d" type="action" string="Print Statement" class="oe_highlight"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

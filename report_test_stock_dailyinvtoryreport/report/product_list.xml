@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_customer">
+        <t t-call="web.html_container">
+            <t t-call="report_test_stock_dailyinvtoryreport.internal_layout">
+                <div class="page" style="font-size:15px;">
+                    <div class="row mb32">
+                        <div class="col-8">
+                            <h2 align="center">運輸貨量參考(約數)總表(一)</h2>
+                        </div>
+                        <div class="col-4">
+                            <strong>日期:</strong>
+                            <span t-esc="docs[0]['quotation_date']"/>
+                        </div>
+                    </div>
+
+                    <table class="table table-bordered">
+                        <tbody class="sale_tbody">
+                            <thead>
+                                <tr>
+                                    <t t-set="exist" t-value="[]"/>
+                                    <th class="text-center">各車總客</th>
+                                    <th class="text-center" style="color:#000;">車輛</th>
+                                    <th class="text-center" style="color:#000;">
+                                        <div>(綠)乾支(5斤裝)</div>
+                                        <div>(白)乾支(20包庄)</div>
+                                        <div>(藍)扁竹(5斤裝)</div>
+                                        <div>(紅)扁竹(20包庄)</div>
+                                        <div>合計</div>
+                                    </th>
+                                    <th class="text-center" style="color:#000;">生根(4包/箱)</th>
+                                    <th class="text-center" style="color:#000;">炸支竹(20包)</th>
+                                    <th class="text-center" style="color:#000;">響鈴卷(箱)</th>
+                                    <th class="text-center" style="color:#000;">芋絲(24盒/箱)</th>
+                                    <th class="text-center" style="color:#000;">鮮竹</th>
+                                    <th class="text-center" style="color:#000;">
+                                        <div>濕竹(百好)</div>
+                                        <div>鮮竹(一梗)</div>
+                                        <div>合計</div>
+                                    </th>
+                                    <th class="text-center" style="color:#000;">杯裝豆漿(24杯x365ml)</th>
+                                    <th class="text-center" style="color:#000;">
+                                        <div>無糖,有糖</div>
+                                        <div>10公升豆漿</div>
+                                        <div>合計</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <t t-set="p01_qty" t-value="0"/>
+                            <t t-set="p02_qty" t-value="0"/>
+                            <t t-set="p03_qty" t-value="0"/>
+                            <t t-set="p04_qty" t-value="0"/>
+                            <t t-set="p05_qty" t-value="0"/>
+                            <t t-set="p06_qty" t-value="0"/>
+                            <t t-set="p07_qty" t-value="0"/>
+                            <t t-set="p08_qty" t-value="0"/>
+                            <t t-set="p09_qty" t-value="0"/>
+                            <t t-foreach="docs" t-as="item">
+                                <t t-set="p01_qty" t-value="p01_qty+item['p01_qty']"/>
+                                <t t-set="p02_qty" t-value="p02_qty+item['p02_qty']"/>
+                                <t t-set="p03_qty" t-value="p03_qty+item['p03_qty']"/>
+                                <t t-set="p04_qty" t-value="p04_qty+item['p04_qty']"/>
+                                <t t-set="p05_qty" t-value="p05_qty+item['p05_qty']"/>
+                                <t t-set="p06_qty" t-value="p06_qty+item['p06_qty']"/>
+                                <t t-set="p07_qty" t-value="p07_qty+item['p07_qty']"/>
+                                <t t-set="p08_qty" t-value="p08_qty+item['p08_qty']"/>
+                                <t t-set="p09_qty" t-value="p09_qty+item['p09_qty']"/>
+                                <tr>
+                                    <td class="text-center">
+                                        <span t-esc="item['scount']"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="item['number']"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="item['p01_qty']"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="item['p02_qty']"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="item['p03_qty']"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="item['p04_qty']"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="item['p05_qty']"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="item['p06_qty']"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="item['p07_qty']"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="item['p08_qty']"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="item['p09_qty']"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="text-center" style="background:''"></td>
+                                <td class="text-center" style="background:''">總計：</td>
+                                <td class="text-center">
+                                    <span t-esc="p01_qty"/>包
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="p02_qty"/>包
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="p03_qty"/>箱
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="p04_qty"/>箱
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="p05_qty"/>箱
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="p06_qty"/>斤
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="p07_qty"/>斤
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="p08_qty"/>箱
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="p09_qty"/>箱
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+    <template id="internal_layout">
+        <t t-if="not o and doc">
+            <t t-set="o" t-value="doc"/>
+        </t>
+
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id.sudo()"/>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"/>
+        </t>
+        <div class="header o_boxed_header">
+            <div class="row mb8">
+                <div class="col-xs-6 text-right mb4">
+                    <h4 class="mt0" t-field="company.report_header"/>
+                </div>
+            </div>
+        </div>
+        <div class="article o_report_layout_background">
+            <t t-raw="0"/>
+        </div>
+    </template>
+</odoo>
+
+
+
+

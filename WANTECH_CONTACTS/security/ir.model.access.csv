@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_car_number_option,access_car_number_option,model_car_number_option,base.group_user,1,1,1,1
+access_customer_type_option,access_customer_type_option,model_customer_type_option,base.group_user,1,1,1,1

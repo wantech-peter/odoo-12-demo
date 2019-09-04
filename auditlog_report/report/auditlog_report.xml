@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="log_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <t t-set="audit_log" t-value="request.env['auditlog.log'].sudo().search([])"/>
+                    <div class="page">
+                      <div class="row">
+                        <div class="col-8 pull-left">
+                          <span><strong>User : </strong><t t-esc="request.env.user.name"/></span>
+                        </div>
+                        <div class="col-8 pull-right">
+                          <span><strong>Date : </strong><t t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y年%m月%d日')"/></span>
+                        </div>
+                      </div>
+                      <br/>
+                      <div class="text-center"><span style="font-size: 25px;"><strong>Customer Log Report</strong></span></div>
+                      <table class="table table-condensed" style="margin-top:10px;">
+                          <thead>
+                              <tr>
+                                  <th>Customer</th>
+                                  <th>Current Payment Term</th>
+                                  <th>Old Payment Term</th>
+                                  <th>Changed on</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr t-foreach="audit_log" t-as="log">
+                                  <t t-foreach="log.line_ids" t-as="log_line">
+                                    <t t-if="log_line.field_name == 'property_payment_term_id'">
+                                        <t t-if="log_line.new_value_text and log_line.old_value_text">
+                                            <td t-esc="log.name"/>
+                                            <td t-esc="''.join(e for e in log_line.new_value_text if e.isalpha())"/>
+                                            <td t-esc="''.join(e for e in log_line.old_value_text if e.isalpha())"/>
+                                            <td t-esc="log.create_date"/>
+                                        </t>
+                                    </t>
+                                  </t>
+                              </tr>
+                          </tbody>
+                      </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
+
+
+
+
+
+

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="sale_order_tree_quotation" model="ir.ui.view">
+            <field name="name">sale.order.form.car_no_int</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="car_number_int"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="sale_order_tree_so" model="ir.ui.view">
+            <field name="name">sale.order.form.car_no_int</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="car_number_int"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

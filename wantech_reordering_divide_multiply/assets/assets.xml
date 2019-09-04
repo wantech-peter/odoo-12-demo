@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <template id="assets_backend" name="reordering_quant_update_assets"
+                  inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript"
+                        src="/wantech_reordering_divide_multiply/static/src/js/UpdateReorderingQuantity.js"/>
+            </xpath>
+        </template>
+    </data>
+</odoo>

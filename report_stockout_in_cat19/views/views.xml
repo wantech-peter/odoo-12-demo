@@ -1,0 +1,61 @@
+<odoo>
+    <data>
+
+        <record id="report_stockout_in_cat19_tree" model="ir.ui.view">
+            <field name="name">report.stockout.in.cat19.tree</field>
+            <field name="model">report.stockout.in.cat19</field>
+            <field name="arch" type="xml">
+                <tree string="鮮竹類每日出貨表">
+                    <field name="custno"/>
+                    <field name="custname"/>
+                    <field name="customer_type"/>
+                    <field name="productcode"/>
+                    <field name="productname"/>
+                    <field name="price_unit"/>
+                    <field name="product_qty"/>
+                    <field name="unit"/>
+                    <field name="quotation_date"/>
+                    <field name="category"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="report_stockout_in_cat19_search" model="ir.ui.view">
+            <field name="name">report.stockout.in.cat19.search</field>
+            <field name="model">report.stockout.in.cat19</field>
+            <field name='arch' type='xml'>
+                <search string="鮮竹類每日出貨表">
+                    <field name="custno"/>
+                    <field name="custname"/>
+                    <field name="customer_type"/>
+                    <field name="productcode"/>
+                    <field name="productname"/>
+                    <field name="price_unit"/>
+                    <field name="product_qty"/>
+                    <field name="unit"/>
+                    <field name="quotation_date"/>
+                    <field name="category"/>
+                </search>
+            </field>
+        </record>
+
+
+        <!--Action for Control Accounts-->
+        <record id="action_report_stockout_in_cat19" model="ir.actions.act_window">
+            <field name="name">鮮竹類每日出貨表</field>
+            <field name="res_model">report.stockout.in.cat19</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="search_view_id" ref="report_stockout_in_cat19_search"/>
+            <field name="context"></field>
+            <field name="view_id" ref="report_stockout_in_cat19_tree"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Picking
+                </p>
+            </field>
+        </record>
+        <menuitem id="menu_report_stockout_in_cat19_tree" name="鮮竹類每日出貨表" parent="sale.menu_sale_report" sequence="5"
+                  action="action_report_stockout_in_cat19"/>
+    </data>
+</odoo>
